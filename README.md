@@ -1,4 +1,9 @@
-# ena_dowload
+# ENA Dowload data and verification
+
+This repository has three main usages: 
+- Download the FASTQ files for an ENA
+- Verify locally and already downloaded FASTQ files against ENA
+- Cross-check read counts for an ENA study against the **submitted BAMs** and the **ENA-generated FASTQs**.
 
 ## 1. /ena_download/download_from_ena.sh
 
@@ -11,17 +16,17 @@ conda create -n dl -c conda-forge aria2 -y
 conda activate dl
 ```
 
-For PRJEB18629 each run has three files on ENA:
+For some projects each run may have three files on ENA:
    ERR*.fastq.gz     <- the generated merged file
    ERR*_1.fastq.gz   <- paired forward
    ERR*_2.fastq.gz   <- paired reverse
 
-Default is to downlaod all, but you can use WHICH=merged or WHICH=paired if only interested on those
+ The default is set to download all, but you can use WHICH=merged or WHICH=paired if only interested in those
 
 Usage:
  ```bash 
-download_ena.sh
-download_ena.sh PRJEB18629 input merged
+bash download_from_ena.sh
+bash download_from_ena.sh PRJEB18629 input merged
 ```
 
 ## 2. /ena_download/verify_ena_downloads.py
@@ -29,7 +34,7 @@ download_ena.sh PRJEB18629 input merged
 Verify locally downloaded FASTQ files against ENA.
 
 For each run it checks TWO independent things:
-  1. md5   -> file integrity: local md5sum vs ENA's published fastq_md5
+  1. md5 -> file integrity: local md5sum vs ENA's published fastq_md5
   2. reads -> local read count (gzip lines / 4) vs ENA's read_count field
 
 A file that FAILS md5 is truncated/corrupt (re-download it) -- or was re-compressed after download (reads may be fine, but bytes differ from ENA).
@@ -54,8 +59,7 @@ Notes:
 
 ## 3. /ena_download/verify_read_counts.py
 
-Cross-check read counts for an ENA study against the **submitted BAMs** and the
-**ENA-generated FASTQs**.
+Cross-check read counts for an ENA study against the **submitted BAMs** and the **ENA-generated FASTQs**.
 
 These runs were submitted as BAM. Each BAM holds collapsed (single-end) reads
 plus some uncollapsed pairs, and ENA split that into three FASTQs per run:

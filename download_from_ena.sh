@@ -1,19 +1,4 @@
 #!/usr/bin/env bash
-# Download the FASTQ files for an ENA study from the ENA filereport, with
-# resume (-c) and md5 verification against ENA's published checksums.
-#
-# For PRJEB18629 each run has three files on ENA:
-#   ERR*.fastq.gz     <- the generated merged file
-#   ERR*_1.fastq.gz   <- paired forward
-#   ERR*_2.fastq.gz   <- paired reverse
-#
-# Default is to downlaod all, but you can use WHICH=merged or WHICH=paired if only interested on those
-#
-# Usage:
-#   bash download_ena.sh
-#   bash download_ena.sh PRJEB18629 input merged
-#
-# Requires: curl, aria2, md5sum 
 
 set -euo pipefail
 
